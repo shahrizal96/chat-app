@@ -1,25 +1,31 @@
-const Conversation = () => {
+import useConversation from '../../zustand/useConversation';
+const Conversation = ({ conversation, lastIndex, emoji }) => {
+  const { selectedConversation, setSelectedConversation } = useConversation();
+
+  const isSelected = selectedConversation?._id === conversation._id;
   return (
     <>
-      <div className="flex items-center gap-2 p-2 py-2 rounded cursor-pointer hover:bg-sky-500">
+      <div
+        className={`flex items-center gap-2 p-2 py-2 rounded cursor-pointer hover:bg-sky-500 ${
+          isSelected ? 'bg-sky-500' : ''
+        }`}
+        onClick={() => setSelectedConversation(conversation)}
+      >
         <div className="avatar online">
           <div className="w-12 rounded-full">
-            <img
-              src="https://avatar.iran.liara.run/public/boy?username=username"
-              alt="user avatar"
-            />
+            <img src={conversation.profilePicture} alt="user avatar" />
           </div>
         </div>
 
         <div className="flex flex-col flex-1">
           <div className="flex justify-between gap-3">
-            <p className="font-bold text-gray-200">John</p>
-            <span className="text-xl">X</span>
+            <p className="font-bold text-gray-200">{conversation.fullName}</p>
+            <span className="text-xl">{emoji}</span>
           </div>
         </div>
       </div>
 
-      <div className="my-0 divider oy-0 h1" />
+      {!lastIndex && <div className="py-0 my-0 divider h1" />}
     </>
   );
 };
